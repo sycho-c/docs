@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리포트 기능 개선 제안</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Chosen Palette: Calm Neutral -->
+  <!-- Application Structure Plan: The application is designed as a narrative-driven single page to persuasively guide the user through the proposal. It starts with a Hero section stating the core proposal, moves to the "Current Challenge" (Kibana's cons), presents the "Proposed Solution" (Native's pros), and culminates in an interactive "Head-to-Head Comparison" using a dynamic Chart.js bar chart. This structure was chosen to build a logical argument, making the final comparison more impactful and understandable. The interactive chart allows users to actively explore each point of comparison, enhancing engagement and comprehension over a static table. -->
+  <!-- Visualization & Content Choices: The core visualization is an interactive bar chart (Chart.js) for the "Goal: Compare" section. Users click buttons for criteria (UX, Performance), and the chart dynamically updates scores for Kibana vs. Native, with contextual text changing below. This interaction directly supports the app's goal of clear comparison. For the "Goal: Change" (strategy), a simple, non-interactive process flow diagram made with HTML/Tailwind is used for clarity. These choices were made to be direct, effective, and avoid unnecessary complexity, adhering to the NO SVG/Mermaid rule. -->
+  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+  <style>
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: #F8F9FA;
+      color: #212529;
+    }
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 300px;
+      max-height: 350px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 350px;
+        max-height: 400px;
+      }
+    }
+    .nav-btn {
+      transition: all 0.3s ease;
+    }
+    .nav-btn.active {
+      background-color: #0D6EFD;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
+    }
+    .section-fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .section-fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-gray-800">리포트 기능 개선 제안</h1>
+    <div class="hidden md:flex space-x-2">
+      <a href="#challenge" class="px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors">현황 및 과제</a>
+      <a href="#solution" class="px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors">신규 제안</a>
+      <a href="#comparison" class="px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors">상세 비교</a>
+      <a href="#strategy" class="px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors">실행 전략</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container mx-auto px-6 py-12">
+
+  <section id="hero" class="text-center py-16 md:py-24 section-fade-in">
+    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+      AI 기반 네이티브 개발로의 전환
+    </h2>
+    <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+      Kibana 임베딩 방식의 한계를 넘어, 사용자 경험을 극대화하고 운영 효율성을 확보하는 새로운 리포트 기능을 제안합니다.
+    </p>
+    <div class="mt-8">
+      <a href="#comparison" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105">
+        핵심 비교 분석 보기
+      </a>
+    </div>
+  </section>
+
+  <div class="my-16 border-t border-gray-200"></div>
+
+  <section id="challenge" class="py-12 section-fade-in">
+    <div class="text-center mb-12">
+      <h3 class="text-3xl font-bold text-gray-800">현황 및 당면 과제</h3>
+      <p class="mt-2 text-md text-gray-500 max-w-2xl mx-auto">기존 Kibana 임베딩 방식은 신속한 구현이라는 장점이 있었으나, 제품이 성숙함에 따라 명확한 한계에 직면했습니다.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <h4 class="text-xl font-bold text-green-600">초기 도입의 장점</h4>
+        <ul class="mt-4 space-y-2 text-gray-700">
+          <li>🚀 <span class="font-semibold">신속한 구현:</span> 검증된 툴을 활용하여 빠르게 리포트 제공</li>
+          <li>📊 <span class="font-semibold">강력한 분석 기능:</span> 다양한 시각화 및 데이터 탐색 기능 활용</li>
+        </ul>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <h4 class="text-xl font-bold text-red-600">현재의 한계점</h4>
+        <ul class="mt-4 space-y-2 text-gray-700">
+          <li>🧩 <span class="font-semibold">일관성 저해:</span> 제품 전체와 이질적인 UI/UX로 사용자 혼란 가중</li>
+          <li>⏳ <span class="font-semibold">성능 저하 문제:</span> 임베딩으로 인한 느린 로딩 및 응답 속도</li>
+          <li>⚙️ <span class="font-semibold">운영 복잡성 증대:</span> 별도 시스템 관리로 인한 리소스 및 비용 부담</li>
+          <li>🔧 <span class="font-semibold">제한적인 커스터마이징:</span> 제품 고유 기능과 연동의 구조적 어려움</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-16 border-t border-gray-200"></div>
+
+  <section id="solution" class="py-12 section-fade-in">
+    <div class="text-center mb-12">
+      <h3 class="text-3xl font-bold text-gray-800">신규 제안: AI 기반 네이티브 개발</h3>
+      <p class="mt-2 text-md text-gray-500 max-w-2xl mx-auto">AI 개발 도구를 활용하여 제품 내에 리포트 기능을 직접 구현함으로써, 기존의 한계를 극복하고 새로운 가치를 제공합니다.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 text-center">
+        <div class="text-4xl mb-4">🎨</div>
+        <h4 class="text-lg font-bold text-gray-800">완벽한 UX 일관성</h4>
+        <p class="text-sm text-gray-600 mt-2">제품 전체와 통합된 디자인으로 직관적이고 만족스러운 사용자 경험을 제공합니다.</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 text-center">
+        <div class="text-4xl mb-4">⚡️</div>
+        <h4 class="text-lg font-bold text-gray-800">최적화된 성능</h4>
+        <p class="text-sm text-gray-600 mt-2">임베딩 오버헤드를 제거하여 빠른 로딩과 즉각적인 데이터 반응 속도를 구현합니다.</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 text-center">
+        <div class="text-4xl mb-4">🛠️</div>
+        <h4 class="text-lg font-bold text-gray-800">운영 효율성 증대</h4>
+        <p class="text-sm text-gray-600 mt-2">외부 시스템 관리 부담을 해소하고, 단일 코드베이스로 유지보수를 단순화합니다.</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 text-center">
+        <div class="text-4xl mb-4">🔗</div>
+        <h4 class="text-lg font-bold text-gray-800">높은 확장성 보장</h4>
+        <p class="text-sm text-gray-600 mt-2">제품의 타 기능과 유기적으로 연동하여 리포트의 활용 가치를 극대화합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-16 border-t border-gray-200"></div>
+
+  <section id="comparison" class="py-12 section-fade-in">
+    <div class="text-center mb-12">
+      <h3 class="text-3xl font-bold text-gray-800">상세 비교 분석</h3>
+      <p class="mt-2 text-md text-gray-500 max-w-2xl mx-auto">각 항목을 클릭하여 기존 방식과 신규 제안 방식의 차이점을 시각적으로 확인해 보세요. 점수가 높을수록 우수함을 의미합니다.</p>
+    </div>
+    <div id="comparison-nav" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+    </div>
+    <div class="bg-white p-4 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+      <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+      </div>
+      <div id="remark-text" class="mt-6 text-center text-gray-700 bg-gray-50 p-4 rounded-lg min-h-[80px] flex items-center justify-center">
+        <p></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-16 border-t border-gray-200"></div>
+
+  <section id="strategy" class="py-12 section-fade-in">
+    <div class="text-center mb-12">
+      <h3 class="text-3xl font-bold text-gray-800">단계적 실행 전략</h3>
+      <p class="mt-2 text-md text-gray-500 max-w-2xl mx-auto">성공적인 전환을 위해 체계적이고 단계적인 접근 방식을 제안합니다.</p>
+    </div>
+    <div class="relative">
+      <div class="hidden md:block border-l-2 border-blue-200 absolute h-full top-0 left-1/2 -ml-px"></div>
+      <div class="space-y-12 md:space-y-0">
+        <div class="md:grid md:grid-cols-2 md:gap-8 items-center">
+          <div class="text-center md:text-right md:pr-8 mb-4 md:mb-0">
+            <div class="text-blue-600 font-bold text-xl">Phase 1</div>
+            <h4 class="text-xl font-bold text-gray-800 mt-1">핵심 기능 우선 개발</h4>
+          </div>
+          <div class="md:pl-8 md:border-l-4 border-transparent">
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+              <p class="text-gray-600">사용자 요구사항 분석을 통해 가장 중요한 핵심 리포트 기능을 우선적으로 개발하고 빠르게 가치를 제공합니다. MVP(최소 기능 제품) 접근 방식을 통해 초기 시장 반응을 확인하고 개선 방향을 수립합니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-2 md:gap-8 items-center">
+          <div class="md:order-2 text-center md:text-left md:pl-8 mb-4 md:mb-0">
+            <div class="text-blue-600 font-bold text-xl">Phase 2</div>
+            <h4 class="text-xl font-bold text-gray-800 mt-1">AI 도구 활용 역량 강화</h4>
+          </div>
+          <div class="md:order-1 md:pr-8 md:text-right md:border-r-4 border-transparent">
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+              <p class="text-gray-600">개발팀 내 AI 코딩 어시스턴트, UI 프로토타이핑 도구 등 최신 AI 개발 도구에 대한 학습 및 활용 능력을 체계적으로 강화합니다. 이를 통해 개발 생산성을 지속적으로 향상시킵니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-2 md:gap-8 items-center">
+          <div class="text-center md:text-right md:pr-8 mb-4 md:mb-0">
+            <div class="text-blue-600 font-bold text-xl">Phase 3</div>
+            <h4 class="text-xl font-bold text-gray-800 mt-1">고도화 및 성과 측정</h4>
+          </div>
+          <div class="md:pl-8 md:border-l-4 border-transparent">
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+              <p class="text-gray-600">수립된 KPI(핵심 성과 지표)를 기반으로 성능, 사용자 만족도 등을 주기적으로 측정하고, 피드백을 반영하여 리포트 기능을 점진적으로 고도화합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="bg-white border-t mt-16">
+  <div class="container mx-auto py-6 px-6 text-center text-gray-500">
+    <p>&copy; 2025. 본 문서는 내부 검토용으로 작성되었습니다.</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const comparisonData = {
+      '사용자 경험 (UX)': { kibana: 3, native: 9, remark: '✅ 신규 방식: 제품 전체와 일관되고 직관적인 UX를 제공하여 사용자 편의성을 극대화합니다.' },
+      '성능/응답속도': { kibana: 4, native: 8, remark: '✅ 신규 방식: 임베딩 오버헤드를 제거하여, 사용자 만족도에 직접적인 영향을 주는 빠른 응답 속도를 기대할 수 있습니다.' },
+      '커스터마이징': { kibana: 3, native: 9, remark: '✅ 신규 방식: 제품 요구사항에 기반한 완전한 맞춤화가 가능해, 타 기능과의 시너지 창출에 용이합니다.' },
+      '개발 속도(초기)': { kibana: 8, native: 6, remark: '△ 초기 프레임워크 구축에는 시간이 소요되나, AI 활용으로 단축 가능하며 이후 유지보수 효율성이 증대됩니다.' },
+      '운영/유지보수': { kibana: 2, native: 8, remark: '✅ 신규 방식: 별도 시스템 관리가 불필요하여 운영을 단순화하고 총소유비용(TCO)을 절감합니다.' },
+      '데이터 연동/확장': { kibana: 5, native: 9, remark: '✅ 신규 방식: 제품 내 데이터를 직접 활용하고 유연하게 확장할 수 있어 데이터 활용도를 극대화합니다.' },
+      '보안/권한 관리': { kibana: 4, native: 8, remark: '✅ 신규 방식: 제품의 통합 보안 및 권한 체계를 그대로 적용하여 관리 효율과 보안성을 증대시킵니다.' }
+    };
+
+    const navContainer = document.getElementById('comparison-nav');
+    const remarkTextElement = document.querySelector('#remark-text p');
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+    let comparisonChart;
+
+    function createOrUpdateChart(criterion) {
+      const data = comparisonData[criterion];
+      if (!data) return;
+
+      const chartData = {
+        labels: ['기존 방식 (Kibana)', '신규 방식 (AI Native)'],
+        datasets: [{
+          label: criterion,
+          data: [data.kibana, data.native],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1,
+          borderRadius: 5,
+          barPercentage: 0.6
+        }]
+      };
+
+      if (comparisonChart) {
+        comparisonChart.data.datasets[0].data = chartData.datasets[0].data;
+        comparisonChart.data.datasets[0].label = chartData.datasets[0].label;
+        comparisonChart.update();
+      } else {
+        comparisonChart = new Chart(ctx, {
+          type: 'bar',
+          data: chartData,
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function(context) {
+                    return `${context.dataset.label}: ${context.raw}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 10,
+                ticks: {
+                  stepSize: 2
+                },
+                grid: {
+                  color: '#E9ECEF'
+                }
+              },
+              y: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  font: {
+                    size: 14,
+                    weight: '500'
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      remarkTextElement.textContent = data.remark;
+    }
+
+    function handleNavClick(e) {
+      const button = e.target.closest('button');
+      if (!button) return;
+
+      const criterion = button.dataset.criterion;
+
+      document.querySelectorAll('#comparison-nav button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      button.classList.add('active');
+
+      createOrUpdateChart(criterion);
+    }
+
+    Object.keys(comparisonData).forEach((key, index) => {
+      const button = document.createElement('button');
+      button.textContent = key;
+      button.dataset.criterion = key;
+      button.className = 'nav-btn px-3 py-2 md:px-4 md:py-2 text-sm md:text-base font-semibold text-gray-700 bg-white rounded-full shadow-sm border border-gray-200 hover:bg-gray-50';
+      if (index === 0) {
+        button.classList.add('active');
+      }
+      navContainer.appendChild(button);
+    });
+
+    navContainer.addEventListener('click', handleNavClick);
+
+    createOrUpdateChart(Object.keys(comparisonData)[0]);
+
+    const sections = document.querySelectorAll('.section-fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  });
+</script>
+</body>
+</html>
