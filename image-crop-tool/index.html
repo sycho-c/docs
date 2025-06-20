@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>정사각 이미지 크롭 & 다운로드</title>
+  <!-- Cropper.js CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  <style>
+      body {
+          font-family: sans-serif;
+          margin: 0;
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          background: #f8f9fa;
+      }
+      #preview-container {
+          width: 100%;
+          max-width: 600px;
+          height: 600px;
+          border: 1px solid #ccc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          background: #fff;
+      }
+      #image {
+          max-width: 100%;
+      }
+      h1 {
+          margin: 0 0 0.5rem;
+          font-size: 1.4rem;
+      }
+      button, input[type="file"] {
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          cursor: pointer;
+      }
+      button {
+          background: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+      }
+      button:hover {
+          background: #0069d9;
+      }
+  </style>
+</head>
+<body>
+<h1>정사각 이미지 크롭 & 다운로드</h1>
+<input type="file" id="upload" accept="image/*" />
+
+<div id="preview-container">
+  <img id="image" style="display:none;" alt="선택한 이미지 미리보기" />
+</div>
+
+<button id="download">정사각 이미지 다운로드</button>
+
+<!-- Cropper.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<script>
+  const uploadInput = document.getElementById('upload');
+  const image = document.getElementById('image');
+  const downloadBtn = document.getElementById('download');
+  let cropper = null;
+
+  uploadInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    image.src = url;
+    image.style.display = 'block';
+
+    if (cropper) {
+      cropper.destroy();
+    }
+    cropper = new Cropper(image, {
+      aspectRatio: 1,
+      viewMode: 1,
+      autoCropArea: 1,
+      background: false,
+      responsive: true,
+    });
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (!cropper) {
+      alert('먼저 이미지를 선택해주세요.');
+      return;
+    }
+    const canvas = cropper.getCroppedCanvas();
+    canvas.toBlob((blob) => {
+      const link = document.createElement('a');
+      link.download = 'square.png';
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    }, 'image/png');
+  });
+</script>
+</body>
+</html>
