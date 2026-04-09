@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PE Standard Framework — Spectra A팀</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple-50: #EEEDFE;
+    --purple-100: #CECBF6;
+    --purple-200: #AFA9EC;
+    --purple-600: #534AB7;
+    --purple-800: #3C3489;
+    --teal-50: #E1F5EE;
+    --teal-100: #9FE1CB;
+    --teal-600: #0F6E56;
+    --teal-800: #085041;
+    --amber-50: #FAEEDA;
+    --amber-100: #FAC775;
+    --amber-600: #854F0B;
+    --amber-800: #633806;
+    --coral-50: #FAECE7;
+    --coral-100: #F5C4B3;
+    --coral-600: #993C1D;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-600: #5F5E5A;
+    --gray-800: #444441;
+    --text: #2C2C2A;
+    --text-sub: #5F5E5A;
+    --border: rgba(0,0,0,0.1);
+    --bg: #FAFAF8;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    padding: 0;
+  }
+
+  .cover {
+    background: var(--purple-800);
+    color: #fff;
+    padding: 64px 48px 56px;
+  }
+  .cover-label {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple-100);
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--purple-100);
+    max-width: 520px;
+  }
+  .cover-meta {
+    margin-top: 40px;
+    display: flex;
+    gap: 32px;
+    font-size: 13px;
+    color: var(--purple-100);
+  }
+  .cover-meta span b { color: #fff; }
+
+  .principle-banner {
+    background: var(--amber-50);
+    border-left: 4px solid var(--amber-600);
+    padding: 24px 32px;
+    margin: 0;
+  }
+  .principle-banner .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber-600);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .principle-banner blockquote {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--amber-800);
+    line-height: 1.5;
+  }
+
+  .content { padding: 48px 48px; }
+
+  section { margin-bottom: 56px; }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  /* Stage cards */
+  .stages { display: flex; flex-direction: column; gap: 0; }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .stage-left {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stage-num {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .stage-title {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .stage-keyword {
+    font-size: 12px;
+    margin-top: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .stage-right {
+    background: #fff;
+    padding: 28px 28px 28px 28px;
+    border-left: 0.5px solid var(--border);
+  }
+
+  .stage-desc {
+    font-size: 14px;
+    color: var(--text-sub);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .block {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 16px;
+    border: 0.5px solid var(--border);
+  }
+  .block-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .block ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding: 4px 0;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .block ul li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--gray-400);
+  }
+
+  .insight-box {
+    margin-top: 16px;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .insight-box .insight-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* Stage color themes */
+  .stage-1 .stage-left { background: var(--purple-50); }
+  .stage-1 .stage-num { color: var(--purple-600); }
+  .stage-1 .stage-title { color: var(--purple-800); }
+  .stage-1 .stage-keyword { background: var(--purple-100); color: var(--purple-800); }
+  .stage-1 .block-label { color: var(--purple-600); }
+  .stage-1 .insight-box { background: var(--purple-50); border: 0.5px solid var(--purple-100); }
+  .stage-1 .insight-label { color: var(--purple-600); }
+
+  .stage-2 .stage-left { background: var(--teal-50); }
+  .stage-2 .stage-num { color: var(--teal-600); }
+  .stage-2 .stage-title { color: var(--teal-800); }
+  .stage-2 .stage-keyword { background: var(--teal-100); color: var(--teal-800); }
+  .stage-2 .block-label { color: var(--teal-600); }
+  .stage-2 .insight-box { background: var(--teal-50); border: 0.5px solid var(--teal-100); }
+  .stage-2 .insight-label { color: var(--teal-600); }
+
+  .stage-3 .stage-left { background: var(--amber-50); }
+  .stage-3 .stage-num { color: var(--amber-600); }
+  .stage-3 .stage-title { color: var(--amber-800); }
+  .stage-3 .stage-keyword { background: var(--amber-100); color: var(--amber-800); }
+  .stage-3 .block-label { color: var(--amber-600); }
+  .stage-3 .insight-box { background: var(--amber-50); border: 0.5px solid var(--amber-100); }
+  .stage-3 .insight-label { color: var(--amber-600); }
+
+  .stage-4 .stage-left { background: var(--coral-50); }
+  .stage-4 .stage-num { color: var(--coral-600); }
+  .stage-4 .stage-title { color: #712B13; }
+  .stage-4 .stage-keyword { background: var(--coral-100); color: #712B13; }
+  .stage-4 .block-label { color: var(--coral-600); }
+  .stage-4 .insight-box { background: var(--coral-50); border: 0.5px solid var(--coral-100); }
+  .stage-4 .insight-label { color: var(--coral-600); }
+
+  /* Flow connector */
+  .stage-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    color: var(--gray-400);
+    font-size: 18px;
+    margin: -6px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Case study */
+  .case-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .case-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    padding: 24px;
+  }
+  .case-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--purple-600);
+    background: var(--purple-50);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .case-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .case-card p {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .case-card .lesson {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--gray-50);
+    padding: 10px 12px;
+    border-radius: 6px;
+    border-left: 3px solid var(--gray-400);
+  }
+
+  /* Principles grid */
+  .principles-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .principle-card {
+    background: #fff;
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .principle-card .p-num {
+    font-size: 11px;
+    color: var(--gray-400);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .principle-card .p-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .principle-card .p-desc {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+
+  footer {
+    background: var(--gray-800);
+    color: var(--gray-100);
+    padding: 24px 48px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span { color: var(--gray-400); }
+
+  @media (max-width: 700px) {
+    .cover { padding: 40px 24px; }
+    .content { padding: 32px 24px; }
+    .stage { grid-template-columns: 1fr; }
+    .stage-right { border-left: none; border-top: 0.5px solid var(--border); }
+    .two-col, .case-cards, .principles-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-label">Spectra · A팀 · Product Engineering</div>
+  <h1>PE Standard Framework</h1>
+  <p class="cover-sub">
+    고객의 말이 아닌 고객의 상황을 이해하는 엔지니어링.<br>
+    완벽한 해결이 아닌 신뢰와 가치를 함께 만드는 엔드투엔드 실행 체계.
+  </p>
+  <div class="cover-meta">
+    <div><b>작성자</b><br>조승열</div>
+    <div><b>소속</b><br>A팀</div>
+    <div><b>버전</b><br>v1.0</div>
+  </div>
+</div>
+
+<!-- Core Principle -->
+<div class="principle-banner">
+  <div class="label">핵심 원칙 / Core Principle</div>
+  <blockquote>
+    "고객의 말이 아닌, 고객의 상황을 이해하는 엔지니어.<br>
+    모든 문제를 완벽하게 푸는 것이 목적이 아니라,<br>
+    고객과의 지속적인 피드백 루프를 통해 신뢰와 가치를 함께 만드는 것."
+  </blockquote>
+</div>
+
+<div class="content">
+
+  <!-- Stage Framework -->
+  <section>
+    <div class="section-title">단계별 실행 Framework</div>
+    <div class="stages">
+
+      <!-- Stage 1 -->
+      <div class="stage stage-1">
+        <div class="stage-left">
+          <div class="stage-num">Stage 1</div>
+          <div class="stage-title">고객 상황<br>이해하기</div>
+          <div class="stage-keyword">Discover</div>
+        </div>
+        <div class="stage-right">
+          <p class="stage-desc">
+            고객이 말하는 문제와 실제 문제는 다를 수 있다. 먼저 고객이 어떤 상황에서, 언제, 왜 불편함을 느끼는지를 맥락으로 파악한다. 기능 요청이 아닌 고객의 행동과 상황을 먼저 본다.
+          </p>
+          <div class="two-col">
+            <div class="block">
+              <div class="block-label">무엇을 할 것인가</div>
+              <ul>
+                <li>고객이 현재 어떤 방식으로 문제를 해결하고 있는지 파악</li>
+                <li>언제, 어떤 맥락에서 불편함이 발생하는지 확인</li>
+                <li>고객이 말하는 문제 뒤에 있는 진짜 문제 찾기</li>
+                <li>이해관계자가 누구인지 정확히 확인 (거래처 vs 영업 담당자)</li>
+              </ul>
+            </div>
+            <div class="block">
+              <div class="block-label">AI 활용 방법</div>
+              <ul>
+                <li>고객 인터뷰 내용을 AI와 함께 정리하고 패턴 도출</li>
+                <li>유사 도메인 사례 리서치 자동화</li>
+                <li>가설 설정 후 AI와 질답으로 빠른 검증</li>
+                <li>문제 재정의 초안 작성 후 팀 공유</li>
+              </ul>
+            </div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-label">인사이트</div>
+            처음에 거래처 간 공유 문제로 알았던 것이 실제로는 영업 담당자의 불편이었던 것처럼, 문제의 주어가 바뀌면 설계 전체가 달라진다. 고객의 말보다 고객의 상황이 먼저다.
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-connector">↓</div>
+
+      <!-- Stage 2 -->
+      <div class="stage stage-2">
+        <div class="stage-left">
+          <div class="stage-num">Stage 2</div>
+          <div class="stage-title">작게 만들어<br>빠르게 검증</div>
+          <div class="stage-keyword">Build Small</div>
+        </div>
+        <div class="stage-right">
+          <p class="stage-desc">
+            완성된 기능이 아닌 핵심 흐름을 먼저 만든다. 기획서와 디자인 없이도 데모 가능한 수준으로 빠르게 구현하고, 고객 앞에 직접 가져가 반응을 본다.
+          </p>
+          <div class="two-col">
+            <div class="block">
+              <div class="block-label">무엇을 할 것인가</div>
+              <ul>
+                <li>핵심 사용 시나리오 1개를 먼저 선택</li>
+                <li>기획자·디자이너 없이 엔드투엔드로 직접 구현</li>
+                <li>데모 가능한 최소 기능(SLC) 우선 완성</li>
+                <li>고객에게 직접 보여줄 수 있는 형태로 빠르게 준비</li>
+              </ul>
+            </div>
+            <div class="block">
+              <div class="block-label">AI 활용 방법</div>
+              <ul>
+                <li>AI 로 흐름 설계 질답 후 바로 코드 생성</li>
+                <li>AI를 활용해 디버깅 포인트를 도출하고, 제안된 항목을 검토 및 결정</li>
+                <li>작은 단위로 나눠 반복 구현 (small iteration)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-label">인사이트</div>
+            PWA iOS 한계, 카카오 공유 제약처럼 기술적 한계는 만들어봐야 알 수 있다. 완성 전에 막히는 지점을 빠르게 찾는 것이 목표다. AI는 이 과정에서 진짜 협력자가 된다.
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-connector">↓</div>
+
+      <!-- Stage 3 -->
+      <div class="stage stage-3">
+        <div class="stage-left">
+          <div class="stage-num">Stage 3</div>
+          <div class="stage-title">고객과 함께<br>재정의하기</div>
+          <div class="stage-keyword">Co-define</div>
+        </div>
+        <div class="stage-right">
+          <p class="stage-desc">
+            데모를 고객에게 보여주고 반응을 수집한다. 안 되는 것은 솔직하게 전달하고, 가능한 대안을 함께 탐색한다. 완벽한 해결이 아닌 현실적인 방향을 고객과 함께 결정한다.
+          </p>
+          <div class="two-col">
+            <div class="block">
+              <div class="block-label">무엇을 할 것인가</div>
+              <ul>
+                <li>데모로 고객의 실제 반응 확인</li>
+                <li>기술적 한계를 솔직하게 설명하고 이유 제시</li>
+                <li>가능한 대안을 2개 이상 정리해 선택지 제공</li>
+                <li>고객이 선택할 수 있도록 방안 문서화</li>
+              </ul>
+            </div>
+            <div class="block">
+              <div class="block-label">AI 활용 방법</div>
+              <ul>
+                <li>고객 피드백 내용을 AI로 빠르게 정리</li>
+                <li>대안 방안 초안을 AI와 함께 작성</li>
+                <li>고객 공유 문서 구성 및 표현 다듬기</li>
+                <li>다음 스프린트 우선순위 도출에 AI 보조</li>
+              </ul>
+            </div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-label">인사이트</div>
+            "안 되는 것을 억지로 되게 하는 것은 원치 않는다"는 고객의 말이 신뢰의 전환점이 됐다. 한계를 솔직하게 보여주는 것 자체가 고객 가치다. 피드백 루프가 신뢰를 만든다.
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-connector">↓</div>
+
+      <!-- Stage 4 -->
+      <div class="stage stage-4">
+        <div class="stage-left">
+          <div class="stage-num">Stage 4</div>
+          <div class="stage-title">전달하고<br>성장하기</div>
+          <div class="stage-keyword">Deliver & Learn</div>
+        </div>
+        <div class="stage-right">
+          <p class="stage-desc">
+            선택된 방향으로 최종 구현하고 고객에게 전달한다. 이 과정에서 얻은 인사이트를 팀 내 표준으로 정리하고, 다음 사이클의 출발점으로 삼는다.
+          </p>
+          <div class="two-col">
+            <div class="block">
+              <div class="block-label">무엇을 할 것인가</div>
+              <ul>
+                <li>확정된 방향으로 PR 단위의 기능 완성</li>
+                <li>고객에게 최종 전달 및 피드백 수집</li>
+                <li>이번 사이클에서 배운 것을 팀에 공유</li>
+                <li>다음 문제 발견을 위한 관찰 포인트 정리</li>
+              </ul>
+            </div>
+            <div class="block">
+              <div class="block-label">AI 활용 방법</div>
+              <ul>
+                <li>PR 설명, 릴리즈 노트 작성 AI 보조</li>
+                <li>주간 보고서 초안 AI와 함께 작성</li>
+                <li>회고 내용을 AI로 정리 후 팀 문서화</li>
+                <li>다음 스프린트 맥락 유지를 위한 CLAUDE.md 업데이트</li>
+              </ul>
+            </div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-label">인사이트</div>
+            전달은 끝이 아니라 다음 Discover의 시작이다. 고객과의 피드백 루프를 끊지 않는 것, 그것이 PE가 엔드투엔드를 책임진다는 의미다.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Case Studies -->
+  <section>
+    <div class="section-title">실전 사례</div>
+    <div class="case-cards">
+      <div class="case-card">
+        <div class="case-tag">우리금융캐피탈</div>
+        <h3>외부 리크루터 ~4,000명 대상<br>채팅 협업 플랫폼 구축</h3>
+        <p>
+          KakaoTalk 오픈채팅방을 대체하는 SalesBridge 플랫폼을 기획자·디자이너 없이 엔드투엔드로 직접 설계하고 개발. Kakao Login 인증, 룸별 참여자 제어, PWA 딜리버리, Alimtalk 연동까지 전체 흐름을 책임.
+        </p>
+        <div class="lesson">
+          고객의 실제 사용 맥락(오픈채팅방 → 외부 채널 분리 필요성)을 이해한 것이 설계의 출발점이었다.
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">가온전선</div>
+        <h3>카카오 상담톡 파일을<br>협업 시스템으로 공유하기</h3>
+        <p>
+          처음에 거래처 간 공유 문제로 이해했다가, 실제로는 영업 담당자 불편임을 재발견. PWA Web Share Target API 시도 → iOS 한계 확인 → 퍼블릭 업로드 링크 대안 제시. 안 된다는 것을 솔직하게 보여준 것이 오히려 신뢰로 이어짐.
+        </p>
+        <div class="lesson">
+          완벽한 해결이 아닌, 함께 고민했다는 경험 자체가 고객 가치였다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Principles Summary -->
+  <section>
+    <div class="section-title">PE 핵심 역량 원칙</div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="p-num">01</div>
+        <div class="p-title">문제 재정의</div>
+        <div class="p-desc">고객이 말하는 문제와 실제 문제를 구분한다. 맥락을 읽고 진짜 문제를 찾는 것이 첫 번째 역량이다.</div>
+      </div>
+      <div class="principle-card">
+        <div class="p-num">02</div>
+        <div class="p-title">When/Context 이해</div>
+        <div class="p-desc">고객이 어떤 순간에 우리 제품을 쓰는지, 그 맥락을 이해해야 기능이 아닌 경험을 설계할 수 있다.</div>
+      </div>
+      <div class="principle-card">
+        <div class="p-num">03</div>
+        <div class="p-title">한계도 가치다</div>
+        <div class="p-desc">"안 된다"를 솔직하게 전달하고 대안을 제시하는 것. 함께 고민한 경험 자체가 신뢰를 만든다.</div>
+      </div>
+      <div class="principle-card">
+        <div class="p-num">04</div>
+        <div class="p-title">AI 협력자</div>
+        <div class="p-desc">AI는 코드 생성 도구가 아니라, 문제를 함께 정의하고 디버깅하고 문서화하는 진짜 협력자다.</div>
+      </div>
+      <div class="principle-card">
+        <div class="p-num">05</div>
+        <div class="p-title">엔드투엔드 책임</div>
+        <div class="p-desc">Discovery부터 전달까지 전체 흐름을 한 사람이 책임지는 것. 피드백 루프를 끊지 않는 것이 PE의 본질이다.</div>
+      </div>
+      <div class="principle-card">
+        <div class="p-num">06</div>
+        <div class="p-title">작게, 빠르게</div>
+        <div class="p-desc">완성보다 검증이 먼저다. 작은 단위로 나눠 만들고, 고객 앞에 빠르게 가져가 반응을 본다.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>Spectra A팀 · Product Engineering Standard Framework v1.0</span>
+  <span>작성자: 조승열</span>
+</footer>
+
+</body>
+</html>
